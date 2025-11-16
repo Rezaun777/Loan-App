@@ -2,6 +2,35 @@ import { connectToDatabase } from "@/lib/db"
 import { type NextRequest, NextResponse } from "next/server"
 import { ObjectId } from "mongodb"
 
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const customerId = params.id
+    
+    if (!ObjectId.isValid(customerId)) {
+      return NextResponse.json({ error: "Invalid customer ID format" }, { status: 400 })
+    }
+
+    const { db } = await connectToDatabase()
+    const loans = db.collection("loans")
+
+    const user = await loans.findOne({ _id: new ObjectId(customerId) })
+    if (!user) {
+      return NextResponse.json({ error: "Customer not found" }, { status: 404 })
+    }
+
+    // Format the data
+    const formattedUser = {
+      ...user,
+      _id: user._id.toString(),
+      applicationDate: user.applicationDate || user.createdAt || null
+    }
+
+    return NextResponse.json(formattedUser, { status: 200 })
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
+}
+
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const customerId = params.id

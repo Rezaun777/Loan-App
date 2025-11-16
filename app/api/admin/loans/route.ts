@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
       statusUpdatedAt: loan.statusUpdatedAt || null,
       loanEndDate: loan.loanEndDate || null,
       monthlyPaymentDates: loan.monthlyPaymentDates || [],
+      displayAmount: loan.displayAmount || null,
       // Add the fields that the frontend MyLoans component expects
       activeDate: loan.activeDate || loan.statusUpdatedAt || null,
       paymentDate: loan.paymentDate || null,
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const { loanId, amount, duration, monthlyInstallment, status, level, assignedTo, payoutNumber, fees, customMessage, personalInfo, bankInfo } = await request.json()
+    const { loanId, amount, displayAmount, duration, monthlyInstallment, status, level, assignedTo, payoutNumber, fees, customMessage, personalInfo, bankInfo } = await request.json()
 
     if (!loanId) {
       return NextResponse.json({ error: "Loan ID required" }, { status: 400 })
@@ -53,6 +54,7 @@ export async function PUT(request: NextRequest) {
 
     // Add the new fields
     if (amount !== undefined) updateData.amount = amount
+    if (displayAmount !== undefined) updateData.displayAmount = displayAmount
     if (duration !== undefined) updateData.duration = duration
     if (monthlyInstallment !== undefined) updateData.monthlyInstallment = monthlyInstallment
     

@@ -14,7 +14,8 @@ export default function FinalWithdrawalPage() {
   const [user, setUser] = useState<any>(null);
   const [loanData, setLoanData] = useState<any>(null);
   const [screenshot, setScreenshot] = useState<File | null>(null);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+  const [hasError, setHasError] = useState(false)
   const [transferNumber, setTransferNumber] = useState("01700-000000"); // Default number
   const [transferText, setTransferText] = useState("বিকাশ সেন্ড মানি: 01700-000000"); // Default text
   const isMobile = useIsMobile();
@@ -82,11 +83,26 @@ export default function FinalWithdrawalPage() {
       .catch(() => setIsLoading(false));
   }, [router]);
 
+  const handleScreenshotChange = (file: File | null) => {
+    setScreenshot(file);
+    // Clear error state when user selects a new screenshot
+    if (hasError) {
+      setHasError(false);
+    }
+    if (showSuccessPopup) {
+      setShowSuccessPopup(false);
+    }
+  };
+
   const handleScreenshotSubmit = async () => {
     if (!screenshot) return;
     
-    // Show success popup immediately when user clicks submit
+    console.log("Submitting screenshot...");
+    
+    // Reset error state and show success popup immediately when user clicks submit
+    setHasError(false);
     setShowSuccessPopup(true);
+    console.log("Success popup should be visible now");
     
     // Start upload process in background
     try {
@@ -94,6 +110,7 @@ export default function FinalWithdrawalPage() {
       const formData = new FormData();
       formData.append('file', screenshot);
       
+      console.log("Uploading image to Cloudinary...");
       // Upload image to Cloudinary
       const uploadResponse = await fetch('/api/upload', {
         method: 'POST',
@@ -105,35 +122,47 @@ export default function FinalWithdrawalPage() {
       }
       
       const uploadResult = await uploadResponse.json();
+      console.log("Image uploaded successfully:", uploadResult);
       
-      // Save screenshot reference to loans collection in personalInfo field
+      // Save screenshot to the new withdrawals collection
       const userId = localStorage.getItem("userId");
-      const saveResponse = await fetch('/api/user/profile', {
-        method: 'PUT',
+      console.log("Saving withdrawal screenshot for user:", userId);
+      const withdrawalResponse = await fetch('/api/withdrawal-screenshot', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-user-id': userId || '',
         },
         body: JSON.stringify({
-          personalInfo: {
-            withdrawalScreenshot: uploadResult.secure_url,
-          }
+          screenshotUrl: uploadResult.secure_url,
         }),
       });
       
-      if (!saveResponse.ok) {
-        throw new Error('Failed to save screenshot reference');
+      if (!withdrawalResponse.ok) {
+        throw new Error('Failed to save withdrawal screenshot');
       }
       
+      console.log("Withdrawal screenshot saved successfully");
+      
+      // NOTE: We're no longer updating the personalInfo field to avoid overwriting previous screenshots
+      // The personalInfo.withdrawalScreenshot field will only contain the first screenshot for backward compatibility
+      
       // Redirect to dashboard after 10 seconds
+      console.log("Setting timeout for redirection...");
       setTimeout(() => {
+        console.log("Redirecting to dashboard...");
         router.push('/dashboard');
       }, 10000);
     } catch (error) {
       console.error('Error submitting screenshot:', error);
-      // Hide success popup and show error
-      setShowSuccessPopup(false);
+      // Set error state to show error in popup
+      setHasError(true);
       alert('ত্রুটি হয়েছে! আবার চেষ্টা করুন।');
+      // Hide success popup only after user acknowledges the error
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+        setHasError(false);
+      }, 3000); // Hide after 3 seconds
     }
   };
 
@@ -155,6 +184,15 @@ export default function FinalWithdrawalPage() {
     // Desktop view
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
+        <style jsx>{`
+          @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+          .animate-progress {
+            animation: progress 10s linear forwards;
+          }
+        `}</style>
         <BottomNavigation />
         <main className="max-w-7xl mx-auto px-4 py-10">
           <div className="flex justify-between items-center mb-8">
@@ -243,7 +281,7 @@ export default function FinalWithdrawalPage() {
                           type="file" 
                           className="hidden" 
                           accept="image/*"
-                          onChange={(e) => e.target.files?.[0] && setScreenshot(e.target.files[0])}
+                          onChange={(e) => handleScreenshotChange(e.target.files?.[0] || null)}
                         />
                       </label>
                     </div>
@@ -288,6 +326,36 @@ export default function FinalWithdrawalPage() {
             </CardContent>
           </Card>
         </main>
+        {/* Success Popup */}
+        {showSuccessPopup && (
+          <div className="fixed inset-0 bg-white bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-[9999]">
+            <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center shadow-2xl border border-gray-200 transform transition-all duration-300 animate-in fade-in zoom-in">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-6 mx-auto">
+                <CheckCircle className="h-8 w-8 text-green-600" />
+              </div>
+              {hasError ? (
+                <>
+                  <h2 className="text-2xl font-bold text-red-600 mb-4">ত্রুটি হয়েছে!</h2>
+                  <p className="text-gray-600 mb-6 text-lg">দুঃখিত, স্ক্রিনশট জমা দেওয়ার সময় ত্রুটি হয়েছে।</p>
+                  <div className="bg-red-50 rounded-lg p-4 mb-6">
+                    <p className="text-red-800 font-medium">আবার চেষ্টা করুন...</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-4">সফল হয়েছে!</h2>
+                  <p className="text-gray-600 mb-6 text-lg">ধন্যবাদ, স্ক্রিনশট সঠিকভাবে জমা দেওয়া হয়েছে।</p>
+                  <div className="bg-blue-50 rounded-lg p-4 mb-6">
+                    <p className="text-blue-800 font-medium">ড্যাশবোর্ডে পুনঃনির্দেশিত হওয়া হচ্ছে...</p>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div className="bg-green-600 h-2.5 rounded-full animate-progress" style={{ width: "100%" }}></div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -295,6 +363,15 @@ export default function FinalWithdrawalPage() {
   // Mobile view with moon-shaped header and static navbar
   return (
     <main className={`phone-frame min-h-screen flex flex-col bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900`}>
+      <style jsx>{`
+        @keyframes progress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+        .animate-progress {
+          animation: progress 10s linear forwards;
+        }
+      `}</style>
       {/* Moon-shaped header with curved top and bottom (without any radial effects) */}
       <div className="w-full pt-12 pb-16 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Moon-shaped curved background */}
@@ -417,7 +494,7 @@ export default function FinalWithdrawalPage() {
                         type="file" 
                         className="hidden" 
                         accept="image/*"
-                        onChange={(e) => e.target.files?.[0] && setScreenshot(e.target.files[0])}
+                        onChange={(e) => handleScreenshotChange(e.target.files?.[0] || null)}
                       />
                     </label>
                   </div>
@@ -470,14 +547,31 @@ export default function FinalWithdrawalPage() {
       
       {/* Success Popup */}
       {showSuccessPopup && (
-        <div className="fixed inset-0 bg-white bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 text-center shadow-2xl border border-gray-100">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4 mx-auto">
-              <CheckCircle className="h-6 w-6 text-green-600" />
+        <div className="fixed inset-0 bg-white bg-opacity-90 backdrop-blur-sm flex items-center justify-center z-[9999]">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center shadow-2xl border border-gray-200 transform transition-all duration-300 animate-in fade-in zoom-in">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-6 mx-auto">
+              <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
-            <h2 className="text-xl font-bold text-gray-800 mb-3">সফল হয়েছে!</h2>
-            <p className="text-gray-600 mb-4 text-sm">ধন্যবাদ, স্ক্রিনশট সঠিকভাবে জমা দেওয়া হয়েছে।</p>
-            <p className="text-gray-500 text-xs">ড্যাশবোর্ডে পুনঃনির্দেশিত হওয়া হচ্ছে...</p>
+            {hasError ? (
+              <>
+                <h2 className="text-2xl font-bold text-red-600 mb-4">ত্রুটি হয়েছে!</h2>
+                <p className="text-gray-600 mb-6 text-lg">দুঃখিত, স্ক্রিনশট জমা দেওয়ার সময় ত্রুটি হয়েছে।</p>
+                <div className="bg-red-50 rounded-lg p-4 mb-6">
+                  <p className="text-red-800 font-medium">আবার চেষ্টা করুন...</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">সফল হয়েছে!</h2>
+                <p className="text-gray-600 mb-6 text-lg">ধন্যবাদ, স্ক্রিনশট সঠিকভাবে জমা দেওয়া হয়েছে।</p>
+                <div className="bg-blue-50 rounded-lg p-4 mb-6">
+                  <p className="text-blue-800 font-medium">ড্যাশবোর্ডে পুনঃনির্দেশিত হওয়া হচ্ছে...</p>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div className="bg-green-600 h-2.5 rounded-full animate-progress" style={{ width: "100%" }}></div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

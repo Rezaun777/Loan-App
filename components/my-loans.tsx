@@ -9,7 +9,6 @@ import { calculateLoanDetails } from "@/lib/loan-calculation"
 interface LoanData {
   _id?: string
   amount?: number
-  displayAmount?: number
   duration?: number
   monthlyInstallment?: number
   status?: string
@@ -106,7 +105,7 @@ export function MyLoans() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center py-2 border-b border-blue-50">
                     <span className="text-blue-600">ঋণ:</span>
-                    <span className="font-bold text-blue-900">৳{convertToBanglaDigits((loanData.displayAmount || loanData.amount)?.toLocaleString("en-US") || "0")}</span>
+                    <span className="font-bold text-blue-900">৳{convertToBanglaDigits(loanData.amount?.toLocaleString("en-US") || "0")}</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-blue-50">
                     <span className="text-blue-600">মেয়াদী:</span>

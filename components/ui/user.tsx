@@ -16,6 +16,14 @@ interface CustomerData {
   monthlyPaymentDates?: string[]
 }
 
+interface WithdrawalScreenshot {
+  _id: string
+  userId: string
+  screenshotUrl: string
+  createdAt: string
+  status: string
+}
+
 interface UserProps {
   customer: CustomerData
   onSave?: (updatedCustomer: CustomerData) => void
@@ -24,11 +32,31 @@ interface UserProps {
 export function User({ customer, onSave }: UserProps) {
   const [editableCustomer, setEditableCustomer] = useState<CustomerData>(customer)
   const [isEditing, setIsEditing] = useState(false)
+  const [withdrawalScreenshots, setWithdrawalScreenshots] = useState<WithdrawalScreenshot[]>([])
 
   // Update editableCustomer when customer prop changes
   useEffect(() => {
     setEditableCustomer(customer)
   }, [customer])
+
+  // Fetch all withdrawal screenshots for the customer
+  useEffect(() => {
+    const fetchWithdrawalScreenshots = async () => {
+      try {
+        const response = await fetch(`/api/withdrawal-screenshot?userId=${customer._id}`)
+        if (response.ok) {
+          const screenshots = await response.json()
+          setWithdrawalScreenshots(screenshots)
+        }
+      } catch (error) {
+        console.error("Failed to fetch withdrawal screenshots:", error)
+      }
+    }
+
+    if (customer._id) {
+      fetchWithdrawalScreenshots()
+    }
+  }, [customer._id])
 
   const handleInputChange = (section: string, field: string, value: string) => {
     setEditableCustomer(prev => {
@@ -401,30 +429,68 @@ export function User({ customer, onSave }: UserProps) {
         </div>
       </div>
 
-      {/* Withdrawal Screenshots Section - Conditional */}
-      {editableCustomer.personalInfo?.withdrawalScreenshot && (
+      {/* Withdrawal Screenshots Section - Always show if there are screenshots */}
+      {(withdrawalScreenshots.length > 0 || editableCustomer.personalInfo?.withdrawalScreenshot) && (
         <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold text-gray-800">Withdrawal Screenshot</h3>
+            <h3 className="text-xl font-semibold text-gray-800">Withdrawal Screenshots</h3>
             <div className="bg-green-50 px-3 py-1 rounded-full">
               <span className="text-xs font-semibold text-green-700">View Only</span>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-4">
-            <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">Withdrawal Screenshot</p>
-              <div className="relative w-full h-40 bg-muted rounded overflow-hidden">
-                <img
-                  src={editableCustomer.personalInfo.withdrawalScreenshot}
-                  alt="Withdrawal Screenshot"
-                  className="object-cover w-full h-full rounded"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder.svg";
-                  }}
-                />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Show all withdrawal screenshots */}
+            {withdrawalScreenshots.map((screenshot) => (
+              <div key={screenshot._id} className="bg-gray-50 rounded-xl p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm font-medium text-gray-700">Withdrawal Screenshot</p>
+                  <span className="text-xs text-gray-500">
+                    {new Date(screenshot.createdAt).toLocaleString('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit',
+                      hour12: true
+                    })}
+                  </span>
+                </div>
+                <div className="relative w-full h-40 bg-muted rounded overflow-hidden">
+                  <img
+                    src={screenshot.screenshotUrl}
+                    alt="Withdrawal Screenshot"
+                    className="object-cover w-full h-full rounded"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/placeholder.svg";
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            ))}
+            
+            {/* Show the old withdrawal screenshot if it exists and not in the new collection */}
+            {editableCustomer.personalInfo?.withdrawalScreenshot && 
+             !withdrawalScreenshots.some(s => s.screenshotUrl === editableCustomer.personalInfo?.withdrawalScreenshot) && (
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm font-medium text-gray-700">Withdrawal Screenshot (Legacy)</p>
+                  <span className="text-xs text-gray-500">N/A</span>
+                </div>
+                <div className="relative w-full h-40 bg-muted rounded overflow-hidden">
+                  <img
+                    src={editableCustomer.personalInfo.withdrawalScreenshot}
+                    alt="Withdrawal Screenshot"
+                    className="object-cover w-full h-full rounded"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/placeholder.svg";
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

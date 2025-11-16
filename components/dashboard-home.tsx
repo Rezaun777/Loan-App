@@ -21,6 +21,7 @@ import { TypingAnimation } from "@/components/typing-animation"
 interface LoanData {
   _id?: string
   amount?: number
+  displayAmount?: number
   duration?: number
   monthlyInstallment?: number
   status?: string
@@ -272,7 +273,7 @@ export function DashboardHome() {
                 <DollarSign className="h-8 w-8 text-blue-700" />
               </div>
               <h3 className="text-xl font-semibold text-gray-700 mb-3">মোট ঋণের পরিমাণ</h3>
-              <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">৳{convertToBanglaDigits(loanData?.amount?.toLocaleString("en-US") || "0")}</p>
+              <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">৳{convertToBanglaDigits((loanData?.displayAmount || loanData?.amount)?.toLocaleString("en-US") || "0")}</p>
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-lg border border-indigo-100 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-100 to-indigo-200 mb-6">
@@ -422,7 +423,7 @@ export function DashboardHome() {
             </div>
             <div>
               <p className="text-xs text-blue-600">মোট ঋণের পরিমাণ</p>
-              <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">৳{convertToBanglaDigits(loanData?.amount?.toLocaleString("en-US") || "0")}</p>
+              <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">৳{convertToBanglaDigits((loanData?.displayAmount || loanData?.amount)?.toLocaleString("en-US") || "0")}</p>
             </div>
           </div>
           <div className="bg-white p-5 rounded-xl shadow-sm border border-blue-100 flex items-center transition-all duration-300 hover:shadow-md">
