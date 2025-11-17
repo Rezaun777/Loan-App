@@ -19,7 +19,68 @@ export default function DashboardPage() {
       return
     }
 
-    setIsLoading(false)
+    // Check user's actual progress in the database
+    const checkUserProgress = async () => {
+      try {
+        const userResponse = await fetch("/api/user/profile", {
+          headers: { "x-user-id": userId },
+        })
+        
+        if (userResponse.ok) {
+          const userData = await userResponse.json()
+          
+          // Check if user has completed personal and bank info
+          const hasPersonalInfo = userData.personalInfo && 
+            userData.personalInfo.fullName && 
+            userData.personalInfo.nidNumber &&
+            userData.personalInfo.presentAddress &&
+            userData.personalInfo.permanentAddress &&
+            userData.personalInfo.mobileNumber &&
+            userData.personalInfo.occupation &&
+            userData.personalInfo.loanPurpose &&
+            userData.personalInfo.birthDate &&
+            userData.personalInfo.nomineeRelation &&
+            userData.personalInfo.nomineeName &&
+            userData.personalInfo.nomineePhone &&
+            userData.personalInfo.profilePhoto &&
+            userData.personalInfo.nidCardFront &&
+            userData.personalInfo.nidCardBack &&
+            userData.personalInfo.selfieWithId &&
+            userData.personalInfo.signature
+          
+          const hasBankInfo = userData.bankInfo && 
+            userData.bankInfo.accountType &&
+            userData.bankInfo.bankName &&
+            userData.bankInfo.accountName &&
+            userData.bankInfo.accountNumber
+          
+          // Check if loan selection is completed
+          const hasLoanSelection = userData.loanSelection && 
+            userData.loanSelection.duration && 
+            userData.loanSelection.amount
+          
+          // Redirect based on actual completion status
+          if (!hasPersonalInfo || !hasBankInfo) {
+            // If personal or bank info is not completed, redirect to personal-bankdata
+            router.push("/personal-bankdata")
+          } else if (!hasLoanSelection) {
+            // If personal/bank info is completed but loan selection is not, redirect to loan-selection
+            router.push("/loan-selection")
+          } else {
+            // If all steps are completed, stay on dashboard
+            setIsLoading(false)
+          }
+        } else {
+          // If we can't fetch user data, default to personal-bankdata
+          router.push("/personal-bankdata")
+        }
+      } catch (err) {
+        // If there's an error checking user data, default to personal-bankdata
+        router.push("/personal-bankdata")
+      }
+    }
+    
+    checkUserProgress()
   }, [router])
 
   if (isLoading) {

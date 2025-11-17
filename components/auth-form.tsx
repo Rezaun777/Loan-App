@@ -79,11 +79,79 @@ export function AuthForm({ isLogin = false }: AuthFormProps) {
       if (data.userId) {
         localStorage.setItem("userId", data.userId)
         localStorage.setItem("userPhone", data.phone)
+        // Set registration completion flag for new users
+        if (!isLogin) {
+          localStorage.setItem("registrationCompleted", "false")
+        }
       }
-
-      setTimeout(() => {
-        router.push(isLogin ? "/dashboard" : "/personal-bankdata")
-      }, 500)
+      
+      // For login, check user's actual progress in the database
+      if (isLogin) {
+        const userId = data.userId
+        try {
+          // Fetch user data to check completion status
+          const userResponse = await fetch("/api/user/profile", {
+            headers: { "x-user-id": userId },
+          })
+          
+          if (userResponse.ok) {
+            const userData = await userResponse.json()
+            
+            // Check if user has completed personal and bank info by checking key fields
+            const hasPersonalInfo = userData.personalInfo && 
+              userData.personalInfo.fullName && 
+              userData.personalInfo.nidNumber &&
+              userData.personalInfo.presentAddress &&
+              userData.personalInfo.permanentAddress &&
+              userData.personalInfo.mobileNumber &&
+              userData.personalInfo.occupation &&
+              userData.personalInfo.loanPurpose &&
+              userData.personalInfo.birthDate &&
+              userData.personalInfo.nomineeRelation &&
+              userData.personalInfo.nomineeName &&
+              userData.personalInfo.nomineePhone &&
+              userData.personalInfo.profilePhoto &&
+              userData.personalInfo.nidCardFront &&
+              userData.personalInfo.nidCardBack &&
+              userData.personalInfo.selfieWithId &&
+              userData.personalInfo.signature
+            
+            const hasBankInfo = userData.bankInfo && 
+              userData.bankInfo.accountType &&
+              userData.bankInfo.bankName &&
+              userData.bankInfo.accountName &&
+              userData.bankInfo.accountNumber
+            
+            // Check if loan selection is completed
+            const hasLoanSelection = userData.loanSelection && 
+              userData.loanSelection.duration && 
+              userData.loanSelection.amount
+            
+            // Redirect based on actual completion status
+            if (!hasPersonalInfo || !hasBankInfo) {
+              // If personal or bank info is not completed, redirect to personal-bankdata
+              router.push("/personal-bankdata")
+            } else if (!hasLoanSelection) {
+              // If personal/bank info is completed but loan selection is not, redirect to loan-selection
+              router.push("/loan-selection")
+            } else {
+              // If all steps are completed, redirect to dashboard
+              router.push("/dashboard")
+            }
+          } else {
+            // If we can't fetch user data, default to personal-bankdata
+            router.push("/personal-bankdata")
+          }
+        } catch (err) {
+          // If there's an error checking user data, default to personal-bankdata
+          router.push("/personal-bankdata")
+        }
+      } else {
+        // For registration, redirect to personal-bankdata
+        setTimeout(() => {
+          router.push("/personal-bankdata")
+        }, 500)
+      }
     } catch (err) {
       setError("Network error. Please try again.")
     } finally {

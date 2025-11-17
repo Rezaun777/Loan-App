@@ -98,9 +98,32 @@ export function CombinedInfoForm() {
     
     // For numeric fields, only allow numeric input
     const numericFields = ["nidNumber", "nomineePhone", "accountNumber", "birthDay", "birthMonth", "birthYear"];
+    
+    // For text-only fields (like occupation), only allow alphabetic characters and spaces
+    const textOnlyFields = ["occupation", "nomineeName", "bankName", "accountName"];
+    
     if (numericFields.includes(name)) {
       // Remove any non-numeric characters
-      const numericValue = value.replace(/[^0-9]/g, '');
+      let numericValue = value.replace(/[^0-9]/g, '');
+      
+      // Apply specific limits for birth date fields
+      if (name === "birthDay" && numericValue.length > 0) {
+        const day = parseInt(numericValue, 10);
+        if (day > 31) numericValue = "31";
+        if (numericValue.length > 2) numericValue = numericValue.slice(0, 2);
+      } else if (name === "birthMonth" && numericValue.length > 0) {
+        const month = parseInt(numericValue, 10);
+        if (month > 12) numericValue = "12";
+        if (numericValue.length > 2) numericValue = numericValue.slice(0, 2);
+      } else if (name === "birthYear" && numericValue.length > 0) {
+        if (numericValue.length > 4) numericValue = numericValue.slice(0, 4);
+        // Apply year range limits
+        if (numericValue.length === 4) {
+          const year = parseInt(numericValue, 10);
+          if (year > 2090) numericValue = "2090";
+          if (year < 1920) numericValue = "1920";
+        }
+      }
       
       // If this is a birth date field, update the combined birthDate field
       if (name === "birthDay" || name === "birthMonth" || name === "birthYear") {
@@ -112,6 +135,10 @@ export function CombinedInfoForm() {
       } else {
         setFormData((prev) => ({ ...prev, [name]: numericValue }))
       }
+    } else if (textOnlyFields.includes(name)) {
+      // Allow only alphabetic characters, spaces, and Bangla characters
+      const textValue = value.replace(/[^a-zA-Z\s\u0980-\u09FF]/g, '');
+      setFormData((prev) => ({ ...prev, [name]: textValue }))
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
     }
@@ -134,9 +161,7 @@ export function CombinedInfoForm() {
       "mobileNumber",
       "occupation",
       "loanPurpose",
-      "birthDay",
-      "birthMonth",
-      "birthYear",
+      "birthDate", // Changed from individual fields to combined field
       "nomineeRelation",
       "nomineeName",
       "nomineePhone",
@@ -157,6 +182,21 @@ export function CombinedInfoForm() {
 
     const missingPersonalFields = personalInfoFields.filter((field) => !formData[field as keyof typeof formData])
     const missingBankFields = bankInfoFields.filter((field) => !formData[field as keyof typeof formData])
+
+    // Additional validation for birthDate
+    if (formData.birthDate) {
+      const birthDateParts = formData.birthDate.split('/')
+      if (birthDateParts.length !== 3 || 
+          !birthDateParts[0] || 
+          !birthDateParts[1] || 
+          !birthDateParts[2] ||
+          birthDateParts[0].length !== 2 ||
+          birthDateParts[1].length !== 2 ||
+          birthDateParts[2].length !== 4) {
+        setError("Please enter a valid birth date in DD/MM/YYYY format")
+        return
+      }
+    }
 
     if (missingPersonalFields.length > 0 || missingBankFields.length > 0) {
       const missingFields = [...missingPersonalFields, ...missingBankFields]
@@ -217,6 +257,8 @@ export function CombinedInfoForm() {
         throw new Error(data.error || "Failed to save bank info")
       }
 
+      // Mark personal-bankdata as completed
+      localStorage.setItem("personalBankDataCompleted", "true")
       router.push("/loan-selection")
     } catch (err) {
       setError(typeof err === "string" ? err : "Network error. Please try again.")
@@ -373,6 +415,8 @@ export function CombinedInfoForm() {
                           disabled={isLoading}
                           className="py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
                           maxLength={2}
+                          min="1"
+                          max="31"
                         />
                       </div>
                     </div>
@@ -388,6 +432,8 @@ export function CombinedInfoForm() {
                           disabled={isLoading}
                           className="py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
                           maxLength={2}
+                          min="1"
+                          max="12"
                         />
                       </div>
                     </div>
@@ -403,6 +449,9 @@ export function CombinedInfoForm() {
                           disabled={isLoading}
                           className="py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
                           maxLength={4}
+                          minLength={4}
+                          min="1920"
+                          max="2090"
                         />
                       </div>
                     </div>

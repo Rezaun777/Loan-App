@@ -82,6 +82,9 @@ export function LoanSelectionForm() {
 
       // Save to localStorage for quick access
       localStorage.setItem("selectedLoan", JSON.stringify(selectedLoanData))
+      
+      // Mark loan selection as completed
+      localStorage.setItem("loanSelectionCompleted", "true")
 
       // Also save to user profile
       const response = await fetch("/api/user/profile", {

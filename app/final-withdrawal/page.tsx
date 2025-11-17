@@ -248,7 +248,7 @@ export default function FinalWithdrawalPage() {
                       .map(([key, value]) => (
                         <div key={key} className="flex justify-between items-center py-2">
                           <span className="text-gray-600 capitalize">{key}:</span>
-                          <span className="font-medium text-gray-800">৳{value as string}</span>
+                          <span className="font-bold text-gray-800 text-lg">৳{value as string}</span>
                         </div>
                       ))
                     }
@@ -461,7 +461,7 @@ export default function FinalWithdrawalPage() {
                     .map(([key, value]) => (
                       <div key={key} className="flex justify-between items-center py-1">
                         <span className="text-gray-600 text-sm capitalize">{key}:</span>
-                        <span className="font-medium text-gray-800 text-sm">৳{value as string}</span>
+                        <span className="font-bold text-gray-800 text-base">৳{value as string}</span>
                       </div>
                     ))
                   }

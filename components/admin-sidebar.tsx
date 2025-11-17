@@ -76,19 +76,19 @@ export function AdminSidebar() {
   const menuItems = getMenuItems()
 
   return (
-    <aside className="w-64 bg-white min-h-screen p-6 flex flex-col shadow-lg border-r border-gray-200">
+    <aside className="w-64 bg-gradient-to-b from-indigo-700 to-purple-800 min-h-screen p-6 flex flex-col shadow-2xl">
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-sm">
-          THE WORLD BANK
+        <div className="w-12 h-12 bg-gradient-to-r from-white to-gray-100 rounded-xl flex items-center justify-center font-bold text-indigo-700 shadow-lg">
+          <img src="/favicon.png" alt="Logo" className="w-8 h-8 object-contain" />
         </div>
         <div>
-          <h1 className="text-xl font-bold text-gray-800">Admin Panel</h1>
-          <p className="text-xs text-gray-500">Financial Services</p>
+          <h1 className="text-xl font-bold text-white">Admin Panel</h1>
+          <p className="text-xs text-indigo-200">Financial Services</p>
           {adminRole && (
             <span className={`text-xs px-2 py-1 rounded-full mt-1 inline-block ${
               adminRole === "administrator" 
-                ? "bg-purple-100 text-purple-800" 
-                : "bg-blue-100 text-blue-800"
+                ? "bg-purple-500 text-white" 
+                : "bg-indigo-500 text-white"
             }`}>
               {adminRole}
             </span>
@@ -104,10 +104,10 @@ export function AdminSidebar() {
                 <button
                   onClick={() => toggleMenu(item.label)}
                   className={cn(
-                    "w-full text-left px-4 py-3 rounded-lg transition-all duration-200 text-sm font-medium flex justify-between items-center",
+                    "w-full text-left px-4 py-3 rounded-lg transition-all duration-300 text-sm font-medium flex justify-between items-center mb-1",
                     pathname === item.href || pathname.startsWith(item.href)
-                      ? "bg-blue-50 text-blue-700 border border-blue-100 shadow-sm"
-                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                      ? "bg-white text-indigo-700 shadow-md"
+                      : "text-indigo-100 hover:bg-indigo-600 hover:text-white",
                   )}
                 >
                   <span>{item.label}</span>
@@ -120,10 +120,10 @@ export function AdminSidebar() {
                         key={subItem.href}
                         href={subItem.href}
                         className={cn(
-                          "block px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium",
+                          "block px-4 py-2 rounded-lg transition-all duration-300 text-sm font-medium mb-1",
                           pathname === subItem.href
-                            ? "bg-blue-100 text-blue-800 border-l-4 border-blue-500 ml-[-4px] shadow-sm"
-                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+                            ? "bg-white text-indigo-700 shadow-sm ml-[-4px]"
+                            : "text-indigo-200 hover:bg-indigo-600 hover:text-white",
                         )}
                       >
                         {subItem.label}
@@ -136,10 +136,10 @@ export function AdminSidebar() {
               <Link
                 href={item.href}
                 className={cn(
-                  "block px-4 py-3 rounded-lg transition-all duration-200 text-sm font-medium",
+                  "block px-4 py-3 rounded-lg transition-all duration-300 text-sm font-medium mb-1",
                   pathname === item.href
-                    ? "bg-blue-50 text-blue-700 border border-blue-100 shadow-sm"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                    ? "bg-white text-indigo-700 shadow-md"
+                    : "text-indigo-100 hover:bg-indigo-600 hover:text-white",
                 )}
               >
                 {item.label}
@@ -151,7 +151,7 @@ export function AdminSidebar() {
 
       <Button 
         variant="destructive" 
-        className="w-full bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 shadow-sm"
+        className="w-full bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-lg transition-all duration-300 shadow-lg mt-4"
         onClick={handleLogout}
       >
         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

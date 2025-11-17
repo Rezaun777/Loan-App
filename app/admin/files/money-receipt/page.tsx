@@ -616,28 +616,28 @@ export default function MoneyReceiptPage() {
 
   if (isAuthLoading) {
     return (
-      <div className="flex min-h-screen bg-background">
+      <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
         <AdminSidebar />
         <main className="flex-1 p-8 flex items-center justify-center">
-          <p>Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </main>
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <AdminSidebar />
 
       <main className="flex-1 p-6 md:p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Money Receipt</h1>
-          <p className="text-gray-600 mt-2">Generate and manage money receipts</p>
+        <div className="mb-8 animate-fadeIn">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Money Receipt</h1>
+          <p className="text-gray-600 text-lg">Generate and manage money receipts</p>
         </div>
 
         {showReceipt && currentReceipt ? (
           <div className="flex flex-col items-center">
-            <div className="w-full max-w-[800px] bg-white rounded-lg shadow-lg p-8 mb-6">
+            <div className="w-full max-w-[800px] bg-white rounded-2xl shadow-xl p-8 mb-6 border border-gray-200">
               {/* Header */}
               <div className="flex justify-between items-start mb-8">
                 {/* Logo Block */}
@@ -737,26 +737,26 @@ export default function MoneyReceiptPage() {
               <Button 
                 onClick={() => setShowReceipt(false)} 
                 variant="outline"
-                className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-150"
+                className="px-6 py-2 border-indigo-200 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded-lg transition-all duration-200 shadow-sm"
               >
                 Back to Form
               </Button>
               <Button 
                 onClick={handlePrint}
-                className="px-6 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors duration-150"
+                className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Print Receipt
               </Button>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fadeIn">
             {/* Generate Receipt Form */}
-            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200 transition-all duration-300 hover:shadow-md">
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200 transition-all duration-300 hover:shadow-lg">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Generate New Receipt</h2>
-                <div className="bg-blue-50 px-3 py-1 rounded-full">
-                  <span className="text-xs font-semibold text-blue-700">New</span>
+                <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-3 py-1 rounded-full">
+                  <span className="text-xs font-bold text-white">New</span>
                 </div>
               </div>
               <form onSubmit={handleGenerateInvoice} className="space-y-6">
@@ -777,7 +777,7 @@ export default function MoneyReceiptPage() {
                         onChange={handleRecipientChange}
                         placeholder="Enter customer name"
                         required
-                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                       />
                     </div>
                     <div>
@@ -789,7 +789,7 @@ export default function MoneyReceiptPage() {
                         onChange={handleRecipientChange}
                         placeholder="Enter mobile number"
                         required
-                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                       />
                     </div>
                     <div>
@@ -801,7 +801,7 @@ export default function MoneyReceiptPage() {
                         onChange={handleRecipientChange}
                         placeholder="Enter address"
                         required
-                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                       />
                     </div>
                   </div>
@@ -818,7 +818,7 @@ export default function MoneyReceiptPage() {
                     <div>
                       <Label htmlFor="purpose" className="text-sm font-medium text-gray-700">Purpose</Label>
                       <Select value={purpose} onValueChange={setPurpose}>
-                        <SelectTrigger className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <SelectTrigger className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                           <SelectValue placeholder="Select purpose" />
                         </SelectTrigger>
                         <SelectContent>
@@ -833,7 +833,7 @@ export default function MoneyReceiptPage() {
                     <div>
                       <Label htmlFor="paidBy" className="text-sm font-medium text-gray-700">Paid By</Label>
                       <Select value={paidBy} onValueChange={setPaidBy}>
-                        <SelectTrigger className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <SelectTrigger className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                           <SelectValue placeholder="Select payment method" />
                         </SelectTrigger>
                         <SelectContent>
@@ -855,7 +855,7 @@ export default function MoneyReceiptPage() {
                         onChange={handleInvoiceChange}
                         placeholder="Enter amount"
                         required
-                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                       />
                     </div>
                     <div>
@@ -866,7 +866,7 @@ export default function MoneyReceiptPage() {
                         onChange={(e) => setAmountInWords(e.target.value)}
                         placeholder="Enter amount in words"
                         required
-                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        className="mt-1 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                       />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -879,7 +879,7 @@ export default function MoneyReceiptPage() {
                             onChange={(e) => setReceiptNo(e.target.value)}
                             placeholder="Enter receipt number"
                             disabled={useCloneReceiptNo}
-                            className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           />
                           <div className="flex items-center">
                             <input
@@ -887,7 +887,7 @@ export default function MoneyReceiptPage() {
                               id="cloneReceiptNo"
                               checked={useCloneReceiptNo}
                               onChange={(e) => setUseCloneReceiptNo(e.target.checked)}
-                              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                              className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                             />
                             <label htmlFor="cloneReceiptNo" className="ml-2 text-sm text-gray-700">Clone</label>
                           </div>
@@ -903,7 +903,7 @@ export default function MoneyReceiptPage() {
                             value={invoice.date}
                             onChange={handleInvoiceChange}
                             disabled={useCloneDate}
-                            className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           />
                           <div className="flex items-center">
                             <input
@@ -911,7 +911,7 @@ export default function MoneyReceiptPage() {
                               id="cloneDate"
                               checked={useCloneDate}
                               onChange={(e) => setUseCloneDate(e.target.checked)}
-                              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                              className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                             />
                             <label htmlFor="cloneDate" className="ml-2 text-sm text-gray-700">Clone</label>
                           </div>
@@ -923,7 +923,7 @@ export default function MoneyReceiptPage() {
 
                 <Button 
                   type="submit" 
-                  className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 shadow-sm font-medium"
+                  className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg font-medium"
                 >
                   Generate Receipt
                 </Button>
@@ -931,31 +931,39 @@ export default function MoneyReceiptPage() {
             </div>
 
             {/* Recent Receipts */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Receipts</h2>
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-800">Recent Receipts</h2>
+                <div className="bg-gradient-to-r from-green-500 to-teal-500 px-3 py-1 rounded-full">
+                  <span className="text-xs font-bold text-white">History</span>
+                </div>
+              </div>
               {invoices.length === 0 ? (
-                <div className="text-center py-8">
-                  <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">No receipts generated yet</h3>
-                  <p className="mt-1 text-sm text-gray-500">Generate your first receipt to get started.</p>
+                <div className="text-center py-12 bg-gray-50 rounded-xl">
+                  <div className="mx-auto h-16 w-16 text-gray-400 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                    <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <h3 className="mt-2 text-lg font-medium text-gray-900">No receipts generated yet</h3>
+                  <p className="mt-1 text-gray-500">Generate your first receipt to get started.</p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
                   {invoices.map((inv) => (
-                    <div key={inv.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors duration-150">
+                    <div key={inv.id} className="border border-gray-200 rounded-xl p-4 hover:bg-indigo-50/50 transition-all duration-200">
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="font-medium text-gray-900">{inv.name}</h3>
-                          <p className="text-sm text-gray-500">Amount: Tk {inv.amount}</p>
+                          <p className="text-sm text-gray-500 mt-1">Amount: <span className="font-semibold">Tk {inv.amount}</span></p>
                           <p className="text-sm text-gray-500">Date: {inv.date}</p>
+                          <p className="text-sm text-gray-500">Receipt No: {inv.receiptNo}</p>
                         </div>
                         <div className="flex gap-2">
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="text-blue-600 hover:text-blue-900 border-blue-200 hover:bg-blue-50 transition-colors duration-150"
+                            className="border-indigo-200 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 transition-all duration-200 shadow-sm"
                             onClick={() => {
                               setCurrentReceipt(inv)
                               setShowReceipt(true)
@@ -966,7 +974,7 @@ export default function MoneyReceiptPage() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="text-green-600 hover:text-green-900 border-green-200 hover:bg-green-50 transition-colors duration-150"
+                            className="border-green-200 text-green-600 hover:text-green-900 hover:bg-green-50 transition-all duration-200 shadow-sm"
                             onClick={() => handlePrintReceipt(inv)}
                           >
                             Print
@@ -981,6 +989,17 @@ export default function MoneyReceiptPage() {
           </div>
         )}
       </main>
+      
+      {/* Custom Animation Styles */}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+      `}</style>
     </div>
   )
 }

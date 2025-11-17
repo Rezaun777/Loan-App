@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { AdminSidebar } from "@/components/admin-sidebar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { User } from "@/components/ui/user"
 import toast, { Toaster } from "react-hot-toast"
 
@@ -337,7 +337,7 @@ export default function CustomersPage() {
         <button
           key="prev"
           onClick={() => handlePageChange(currentPage - 1)}
-          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 mr-1"
+          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 mr-1 transition-all duration-200"
         >
           Previous
         </button>
@@ -350,9 +350,9 @@ export default function CustomersPage() {
         <button
           key={i}
           onClick={() => handlePageChange(i)}
-          className={`px-3 py-1 rounded-md border text-sm font-medium mr-1 ${
+          className={`px-3 py-1 rounded-md border text-sm font-medium mr-1 transition-all duration-200 ${
             currentPage === i
-              ? "border-blue-500 bg-blue-50 text-blue-600"
+              ? "border-indigo-500 bg-indigo-50 text-indigo-600"
               : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
           }`}
         >
@@ -367,7 +367,7 @@ export default function CustomersPage() {
         <button
           key="next"
           onClick={() => handlePageChange(currentPage + 1)}
-          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 ml-1"
+          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 ml-1 transition-all duration-200"
         >
           Next
         </button>
@@ -380,14 +380,14 @@ export default function CustomersPage() {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-all duration-200"
           >
             Previous
           </button>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-all duration-200"
           >
             Next
           </button>
@@ -418,23 +418,32 @@ export default function CustomersPage() {
   const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer)
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <AdminSidebar />
       <Toaster position="top-center" />
-      <main className="flex-1 p-4 md:p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Customer Management</h1>
-          <p className="text-gray-600 mt-2">Manage and view all registered customers</p>
+      
+      <main className="flex-1 p-6 md:p-8">
+        <div className="mb-8 animate-fadeIn">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Customer Management</h1>
+          <p className="text-gray-600 text-lg">Manage and view all registered customers</p>
         </div>
 
         {isLoading && (
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-pulse rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="flex flex-col items-center justify-center h-96 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-inner">
+            <div className="relative w-24 h-24 mb-6">
+              <div className="absolute inset-0 rounded-full bg-indigo-500 opacity-20 animate-ping"></div>
+              <div className="absolute inset-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 animate-spin"></div>
+              <div className="absolute inset-4 rounded-full bg-white flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-indigo-800 mb-2 animate-pulse">Loading Customers</h3>
+            <p className="text-indigo-600 animate-bounce">Preparing your customer management dashboard...</p>
           </div>
         )}
 
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded">
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg shadow-sm">
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -449,60 +458,65 @@ export default function CustomersPage() {
         )}
 
         {!isLoading && !error && (
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-800">Customer List</h2>
+                  <h2 className="text-2xl font-bold text-gray-800">Customer List</h2>
                   <p className="text-gray-600 text-sm mt-1">{totalCustomers} customers found</p>
                 </div>
                 <div className="w-full md:w-80">
-                  <Input
-                    placeholder="Search by name, phone or NID"
-                    value={searchTerm}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
+                  <div className="relative">
+                    <Input
+                      placeholder="Search by name, phone or NID"
+                      value={searchTerm}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-0 transition-all duration-300 shadow-sm hover:shadow-md"
+                    />
+                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {currentCustomers.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-200">
-                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <h3 className="mt-2 text-lg font-medium text-gray-900">No customers found</h3>
+              <div className="bg-white rounded-2xl shadow-xl p-12 text-center border border-gray-200">
+                <div className="mx-auto h-16 w-16 text-gray-400 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="mt-2 text-xl font-bold text-gray-900">No customers found</h3>
                 <p className="mt-1 text-gray-500">Try adjusting your search criteria to find what you're looking for.</p>
               </div>
             ) : (
               <>
-                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+                <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                      <thead className="bg-gradient-to-r from-indigo-50 to-purple-50">
                         <tr>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member Name</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mobile</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NID</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Occupation</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Application Date</th>
-                          <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">ID</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Member Name</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Mobile</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">NID</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Occupation</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Application Date</th>
+                          <th scope="col" className="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {currentCustomers.map((customer, index) => (
                           <tr 
                             key={customer._id} 
-                            className="hover:bg-gray-50 transition-colors duration-150"
+                            className="hover:bg-indigo-50/50 transition-all duration-200"
                           >
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{indexOfFirstCustomer + index + 1}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{customer.personalInfo?.fullName || customer.name || "N/A"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{customer.personalInfo?.mobileNumber || customer.phone || "N/A"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{customer.personalInfo?.nidNumber || "N/A"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{customer.personalInfo?.occupation || "N/A"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{customer.personalInfo?.mobileNumber || customer.phone || "N/A"}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{customer.personalInfo?.nidNumber || "N/A"}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{customer.personalInfo?.occupation || "N/A"}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                               {customer.applicationDate 
                                 ? new Date(customer.applicationDate).toLocaleDateString('en-GB') 
                                 : "N/A"}
@@ -512,7 +526,7 @@ export default function CustomersPage() {
                                 <Button 
                                   variant="outline" 
                                   size="sm" 
-                                  className="text-blue-600 hover:text-blue-900 border-blue-200 hover:bg-blue-50 transition-colors duration-150"
+                                  className="border-indigo-200 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 transition-all duration-200 shadow-sm"
                                   onClick={() => handleProfileClick(customer)}
                                 >
                                   View Profile
@@ -520,7 +534,7 @@ export default function CustomersPage() {
                                 <Button 
                                   variant="outline" 
                                   size="sm" 
-                                  className="text-green-600 hover:text-green-900 border-green-200 hover:bg-green-50 transition-colors duration-150"
+                                  className="border-green-200 text-green-600 hover:text-green-900 hover:bg-green-50 transition-all duration-200 shadow-sm"
                                   onClick={() => handleResetPasswordClick(customer)}
                                 >
                                   Reset Password
@@ -528,7 +542,7 @@ export default function CustomersPage() {
                                 <Button 
                                   variant="outline" 
                                   size="sm" 
-                                  className="text-red-600 hover:text-red-900 border-red-200 hover:bg-red-50 transition-colors duration-150"
+                                  className="border-red-200 text-red-600 hover:text-red-900 hover:bg-red-50 transition-all duration-200 shadow-sm"
                                   onClick={() => handleDelete(customer._id)}
                                 >
                                   Delete
@@ -548,25 +562,32 @@ export default function CustomersPage() {
         )}
 
         <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-800">Customer Profile</DialogTitle>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl border border-gray-200">
+            <DialogHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 -m-6 mb-6 rounded-t-2xl text-white">
+              <DialogTitle className="text-2xl font-bold">Customer Profile</DialogTitle>
+              <p className="text-indigo-100 mt-1">View and edit customer information</p>
             </DialogHeader>
             {selectedCustomer && <User customer={selectedCustomer} onSave={handleSaveProfile} />}
+            <DialogFooter>
+              <Button variant="outline" onClick={handleCloseModal}>
+                Close
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
 
         {/* Password Reset Modal */}
         <Dialog open={isResetModalOpen} onOpenChange={handleCloseResetModal}>
-          <DialogContent className="max-w-md rounded-xl">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-800">Reset Password</DialogTitle>
+          <DialogContent className="max-w-md rounded-2xl shadow-xl border border-gray-200">
+            <DialogHeader className="bg-gradient-to-r from-green-500 to-teal-600 p-6 -m-6 mb-6 rounded-t-2xl text-white">
+              <DialogTitle className="text-2xl font-bold">Reset Password</DialogTitle>
+              <p className="text-green-100 mt-1">Update customer password and email</p>
             </DialogHeader>
             {selectedCustomer && (
               <div className="space-y-4 py-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
-                  <p className="text-sm text-gray-900">{selectedCustomer.personalInfo?.fullName || selectedCustomer.name}</p>
+                  <p className="text-sm text-gray-900 font-medium">{selectedCustomer.personalInfo?.fullName || selectedCustomer.name}</p>
                 </div>
                 
                 <div>
@@ -578,7 +599,7 @@ export default function CustomersPage() {
                     type="email"
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
-                    className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                   />
                 </div>
                 
@@ -601,7 +622,9 @@ export default function CustomersPage() {
                         setPasswordLengthError(false);
                       }
                     }}
-                    className={`rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10 ${passwordMatchError || passwordLengthError ? 'border-red-500' : ''}`}
+                    className={`rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-10 transition-all duration-200 ${
+                      passwordMatchError || passwordLengthError ? 'border-red-500' : ''
+                    }`}
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center top-6">
                     <button
@@ -639,7 +662,9 @@ export default function CustomersPage() {
                         setPasswordMatchError(false);
                       }
                     }}
-                    className={`rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10 ${passwordMatchError ? 'border-red-500' : ''}`}
+                    className={`rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-10 transition-all duration-200 ${
+                      passwordMatchError ? 'border-red-500' : ''
+                    }`}
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center top-6">
                     <button
@@ -664,14 +689,14 @@ export default function CustomersPage() {
                 
                 {/* Show password match error message */}
                 {passwordMatchError && (
-                  <div className="text-red-500 text-sm mt-1">
+                  <div className="text-red-500 text-sm mt-1 animate-shake">
                     Passwords do not match
                   </div>
                 )}
                 
                 {/* Show password length error message */}
                 {passwordLengthError && (
-                  <div className="text-red-500 text-sm mt-1">
+                  <div className="text-red-500 text-sm mt-1 animate-shake">
                     Password must be at least 6 characters
                   </div>
                 )}
@@ -681,13 +706,14 @@ export default function CustomersPage() {
                     variant="outline"
                     onClick={handleCloseResetModal}
                     disabled={isResetSaving}
+                    className="transition-all duration-200"
                   >
                     Cancel
                   </Button>
                   <Button
                     onClick={handleResetPassword}
                     disabled={isResetSaving}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white transition-all duration-200 shadow-md hover:shadow-lg"
                   >
                     {isResetSaving ? "Saving..." : "Reset Password"}
                   </Button>
@@ -697,6 +723,25 @@ export default function CustomersPage() {
           </DialogContent>
         </Dialog>
       </main>
+      
+      {/* Custom Animation Styles */}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+        .animate-shake {
+          animation: shake 0.5s ease-in-out;
+        }
+      `}</style>
     </div>
   )
 }

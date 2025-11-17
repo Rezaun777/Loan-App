@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import { LoanApplicationSummary } from "@/components/loan-application-summary"
@@ -9,13 +9,32 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export default function LoanApplicationPage() {
   const router = useRouter()
   const isMobile = useIsMobile()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const userId = localStorage.getItem("userId")
     if (!userId) {
       router.push("/login")
+      return
     }
-  }, [router])
+
+    // Simply finish loading without any checks
+    setIsLoading(false)
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col items-center justify-center p-4">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-indigo-200 mb-6 mx-auto">
+            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-foreground text-xl font-medium">লোড হচ্ছে...</p>
+          <p className="text-gray-500 mt-2">আপনার তথ্য আনা হচ্ছে</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!isMobile) {
     return (

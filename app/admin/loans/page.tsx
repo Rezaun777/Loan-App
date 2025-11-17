@@ -545,24 +545,32 @@ export default function LoansPage() {
   const currentLoans = filteredLoans.slice(indexOfFirstLoan, indexOfLastLoan)
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <AdminSidebar />
       <Toaster position="top-center" />
 
       <main className="flex-1 p-6 md:p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Loan Management</h1>
-          <p className="text-gray-600 mt-2">Manage and process customer loan applications</p>
+        <div className="mb-8 animate-fadeIn">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Loan Management</h1>
+          <p className="text-gray-600 text-lg">Manage and process customer loan applications</p>
         </div>
 
         {isLoading && (
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-pulse rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="flex flex-col items-center justify-center h-96 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-inner">
+            <div className="relative w-24 h-24 mb-6">
+              <div className="absolute inset-0 rounded-full bg-indigo-500 opacity-20 animate-ping"></div>
+              <div className="absolute inset-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 animate-spin"></div>
+              <div className="absolute inset-4 rounded-full bg-white flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-indigo-800 mb-2 animate-pulse">Loading Loans</h3>
+            <p className="text-indigo-600 animate-bounce">Preparing your loan management dashboard...</p>
           </div>
         )}
 
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded">
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg shadow-sm">
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -577,86 +585,91 @@ export default function LoansPage() {
         )}
 
         {!isLoading && !error && (
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-800">Loan Applications</h2>
+                  <h2 className="text-2xl font-bold text-gray-800">Loan Applications</h2>
                   <p className="text-gray-600 text-sm mt-1">{totalLoans} applications found</p>
                 </div>
                 <div className="w-full md:w-80">
-                  <Input
-                    placeholder="Search by member name, phone, status or duration"
-                    value={searchTerm}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    className="rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
+                  <div className="relative">
+                    <Input
+                      placeholder="Search by member name, phone, status or duration"
+                      value={searchTerm}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:ring-0 transition-all duration-300 shadow-sm hover:shadow-md"
+                    />
+                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {currentLoans.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-200">
-                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h3 className="mt-2 text-lg font-medium text-gray-900">No loan applications found</h3>
+              <div className="bg-white rounded-2xl shadow-xl p-12 text-center border border-gray-200">
+                <div className="mx-auto h-16 w-16 text-gray-400 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <h3 className="mt-2 text-xl font-bold text-gray-900">No loan applications found</h3>
                 <p className="mt-1 text-gray-500">Try adjusting your search criteria to find what you're looking for.</p>
               </div>
             ) : (
               <>
-                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+                <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                      <thead className="bg-gradient-to-r from-indigo-50 to-purple-50">
                         <tr>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member Name</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mobile</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loan Amount</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Installment</th>
-                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
-                          <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">ID</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Member Name</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Mobile</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Loan Amount</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Status</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Level</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Duration</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Installment</th>
+                          <th scope="col" className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Admin</th>
+                          <th scope="col" className="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {currentLoans.map((loan, index) => (
                           <tr 
                             key={loan._id} 
-                            className="hover:bg-gray-50 transition-colors duration-150"
+                            className="hover:bg-indigo-50/50 transition-all duration-200"
                           >
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{indexOfFirstLoan + index + 1}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{loan.personalInfo?.fullName || loan.personalInfo?.name || "N/A"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{loan.personalInfo?.mobileNumber || loan.personalInfo?.phone || "N/A"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Tk {loan.amount?.toLocaleString()}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{loan.personalInfo?.mobileNumber || loan.personalInfo?.phone || "N/A"}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">Tk {loan.amount?.toLocaleString()}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor(loan.status)}`}>
+                              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadgeColor(loan.status)}`}>
                                 {STATUS_LABELS[loan.status] || loan.status}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               {loan.level ? (
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getLevelBadgeColor(loan.level)}`}>
+                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getLevelBadgeColor(loan.level)}`}>
                                   {LEVEL_LABELS[loan.level]}
                                 </span>
                               ) : (
-                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
                                   N/A
                                 </span>
                               )}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{loan.duration} months</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Tk {loan.monthlyInstallment?.toLocaleString()}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{loan.assignedTo || "N/A"}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{loan.duration} months</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">Tk {loan.monthlyInstallment?.toLocaleString()}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{loan.assignedTo || "N/A"}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <div className="flex justify-end space-x-2">
                                 <Button 
                                   variant="outline" 
                                   size="sm" 
-                                  className="text-blue-600 hover:text-blue-900 border-blue-200 hover:bg-blue-50 transition-colors duration-150"
+                                  className="border-indigo-200 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 transition-all duration-200 shadow-sm"
                                   onClick={() => handleOpenLoan(loan)}
                                 >
                                   Edit Loan
@@ -664,7 +677,7 @@ export default function LoansPage() {
                                 <Button 
                                   variant="outline" 
                                   size="sm" 
-                                  className="text-green-600 hover:text-green-900 border-green-200 hover:bg-green-50 transition-colors duration-150"
+                                  className="border-green-200 text-green-600 hover:text-green-900 hover:bg-green-50 transition-all duration-200 shadow-sm"
                                   onClick={() => handleViewProfile(loan)}
                                 >
                                   View Profile
@@ -672,7 +685,7 @@ export default function LoansPage() {
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="text-red-600 hover:text-red-900 border-red-200 hover:bg-red-50 transition-colors duration-150"
+                                  className="border-red-200 text-red-600 hover:text-red-900 hover:bg-red-50 transition-all duration-200 shadow-sm"
                                   onClick={() => handleDeleteMember(loan)}
                                 >
                                   Delete
@@ -694,9 +707,10 @@ export default function LoansPage() {
 
         {/* Loan Management Dialog */}
         <Dialog open={!!selectedLoan} onOpenChange={() => setSelectedLoan(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-800">Edit Loan Information</DialogTitle>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl border border-gray-200">
+            <DialogHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 -m-6 mb-6 rounded-t-2xl text-white">
+              <DialogTitle className="text-2xl font-bold">Edit Loan Information</DialogTitle>
+              <p className="text-indigo-100 mt-1">Manage and update loan details</p>
             </DialogHeader>
 
             {selectedLoan && (
@@ -704,9 +718,9 @@ export default function LoansPage() {
                 {/* Member Information Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Personal Information</h3>
-                    <div className="bg-blue-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-blue-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Personal Information</h3>
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -772,9 +786,9 @@ export default function LoansPage() {
                 {/* Nominee Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Nominee Information</h3>
-                    <div className="bg-green-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-green-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Nominee Information</h3>
+                    <div className="bg-gradient-to-r from-green-500 to-teal-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -808,9 +822,9 @@ export default function LoansPage() {
                 {/* Images Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Documents</h3>
-                    <div className="bg-purple-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-purple-700">View Only</span>
+                    <h3 className="text-xl font-bold text-gray-800">Documents</h3>
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">View Only</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -885,9 +899,9 @@ export default function LoansPage() {
                 {/* Bank Information Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Bank Information</h3>
-                    <div className="bg-blue-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-blue-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Bank Information</h3>
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -962,9 +976,9 @@ export default function LoansPage() {
                 {/* Loan Details Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Loan Details</h3>
-                    <div className="bg-green-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-green-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Loan Details</h3>
+                    <div className="bg-gradient-to-r from-green-500 to-teal-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1074,9 +1088,9 @@ export default function LoansPage() {
                 {/* Loan Dates Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Loan Dates</h3>
-                    <div className="bg-indigo-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-indigo-700">Information</span>
+                    <h3 className="text-xl font-bold text-gray-800">Loan Dates</h3>
+                    <div className="bg-gradient-to-r from-indigo-500 to-purple-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Information</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1118,9 +1132,9 @@ export default function LoansPage() {
                 {/* Fees Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Fees</h3>
-                    <div className="bg-purple-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-purple-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Fees</h3>
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1184,9 +1198,9 @@ export default function LoansPage() {
                 {/* Custom Message Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Custom Message</h3>
-                    <div className="bg-orange-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-orange-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Custom Message</h3>
+                    <div className="bg-gradient-to-r from-orange-500 to-red-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="space-y-4">
@@ -1241,18 +1255,19 @@ export default function LoansPage() {
 
         {/* User Profile Dialog */}
         <Dialog open={!!selectedUserProfile} onOpenChange={() => setSelectedUserProfile(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-800">User Profile</DialogTitle>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl border border-gray-200">
+            <DialogHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 -m-6 mb-6 rounded-t-2xl text-white">
+              <DialogTitle className="text-2xl font-bold">User Profile</DialogTitle>
+              <p className="text-indigo-100 mt-1">View and edit user information</p>
             </DialogHeader>
             
             {selectedUserProfile && (
               <div className="space-y-6">
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Personal Information</h3>
-                    <div className="bg-blue-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-blue-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Personal Information</h3>
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1360,9 +1375,9 @@ export default function LoansPage() {
 
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Nominee Information</h3>
-                    <div className="bg-green-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-green-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Nominee Information</h3>
+                    <div className="bg-gradient-to-r from-green-500 to-teal-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1414,9 +1429,9 @@ export default function LoansPage() {
                 {/* Document Images Section */}
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Document Images</h3>
-                    <div className="bg-blue-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-blue-700">View Only</span>
+                    <h3 className="text-xl font-bold text-gray-800">Document Images</h3>
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">View Only</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -1510,9 +1525,9 @@ export default function LoansPage() {
 
                 <div className="border-b border-gray-200 pb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">Bank Information</h3>
-                    <div className="bg-blue-50 px-3 py-1 rounded-full">
-                      <span className="text-xs font-semibold text-blue-700">Editable</span>
+                    <h3 className="text-xl font-bold text-gray-800">Bank Information</h3>
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-white">Editable</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1597,6 +1612,17 @@ export default function LoansPage() {
           </DialogContent>
         </Dialog>
       </main>
+      
+      {/* Custom Animation Styles */}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+      `}</style>
     </div>
   )
 }
