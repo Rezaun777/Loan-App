@@ -24,14 +24,17 @@ export function AuthForm({ isLogin = false }: AuthFormProps) {
     password: "",
   })
 
+  // Set max length based on form type (21 for login, 20 for registration)
+  const maxPhoneLength = isLogin ? 21 : 20
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     
-    // For phone field, only allow numeric input
+    // For phone field, allow numeric input and + symbol with appropriate max length
     if (name === "phone") {
-      // Remove any non-numeric characters
-      const numericValue = value.replace(/[^0-9]/g, '');
-      setFormData((prev) => ({ ...prev, [name]: numericValue }))
+      // Allow + symbol and numeric characters, limit to appropriate max length
+      const phoneValue = value.replace(/[^0-9+]/g, '').slice(0, maxPhoneLength);
+      setFormData((prev) => ({ ...prev, [name]: phoneValue }))
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
     }
@@ -43,9 +46,9 @@ export function AuthForm({ isLogin = false }: AuthFormProps) {
 
     // Validation for registration form
     if (!isLogin) {
-      // Phone number validation: must be exactly 11 digits
-      if (formData.phone.length !== 11 || !/^\d{11}$/.test(formData.phone)) {
-        setError("মোবাইল নম্বর অবশ্যই ১১ টি সংখ্যা হতে হবে")
+      // Phone number validation: must not be empty
+      if (formData.phone.length === 0) {
+        setError("মোবাইল নম্বর অবশ্যই প্রদান করতে হবে")
         return
       }
 
@@ -212,9 +215,9 @@ export function AuthForm({ isLogin = false }: AuthFormProps) {
                 required
                 disabled={isLoading}
                 type="tel"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                maxLength={11}
+                inputMode="tel"
+                pattern="[0-9+]*"
+                maxLength={maxPhoneLength}
                 className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
               />
             </div>

@@ -164,10 +164,10 @@ export default function DashboardPage() {
       </div>
       
       {/* Dashboard content section with matching curved top and bottom padding for nav */}
-      <div className="flex-1 flex flex-col px-4 pb-20 bg-gradient-to-b from-blue-50/90 to-indigo-100/90 backdrop-blur-sm">
+      <div className="flex-1 flex flex-col px-4 pb-20 bg-gradient-to-b from-blue-50/90 to-indigo-100/90 backdrop-blur-sm w-full">
         {/* Curved top to match header */}
-        <div className="h-8 bg-gradient-to-b from-white/30 to-transparent rounded-t-[50%] -mt-4"></div>
-        <div className="flex-grow">
+        <div className="h-8 bg-gradient-to-b from-white/30 to-transparent rounded-t-[50%] -mt-4 w-full"></div>
+        <div className="flex-grow w-full">
           <DashboardHome />
         </div>
       </div>

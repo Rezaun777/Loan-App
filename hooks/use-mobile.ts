@@ -8,13 +8,21 @@ export function useIsMobile() {
   React.useEffect(() => {
     // Check if window is defined (client-side)
     if (typeof window !== 'undefined') {
-      const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-      const onChange = () => {
-        setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+      const checkIsMobile = () => {
+        const mobile = window.innerWidth < MOBILE_BREAKPOINT
+        setIsMobile(mobile)
       }
-      mql.addEventListener('change', onChange)
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-      return () => mql.removeEventListener('change', onChange)
+      
+      // Initial check
+      checkIsMobile()
+      
+      // Add event listener for resize
+      window.addEventListener('resize', checkIsMobile)
+      
+      // Cleanup listener on unmount
+      return () => {
+        window.removeEventListener('resize', checkIsMobile)
+      }
     }
   }, [])
 

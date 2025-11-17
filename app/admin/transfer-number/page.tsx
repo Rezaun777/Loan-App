@@ -153,8 +153,8 @@ export default function TransferNumberPage() {
           </CardContent>
         </Card>
         
-        {/* Custom Animation Styles */}
-        <style jsx global>{`
+        <style>
+          {`
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -169,7 +169,8 @@ export default function TransferNumberPage() {
           .animate-slideInUp {
             animation: slideInUp 0.5s ease-out forwards;
           }
-        `}</style>
+          `}
+        </style>
       </main>
     </div>
   )

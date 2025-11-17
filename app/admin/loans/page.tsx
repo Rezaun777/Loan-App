@@ -1613,8 +1613,9 @@ export default function LoansPage() {
         </Dialog>
       </main>
       
-      {/* Custom Animation Styles */}
-      <style jsx global>{`
+      <style>
+        {
+        `
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
@@ -1622,7 +1623,9 @@ export default function LoansPage() {
         .animate-fadeIn {
           animation: fadeIn 0.6s ease-out forwards;
         }
-      `}</style>
+        `
+        }
+      </style>
     </div>
   )
 }

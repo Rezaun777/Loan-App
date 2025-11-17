@@ -127,6 +127,39 @@ export function DashboardHome() {
     return levelLabels[level] || level
   }
 
+  // Function to get status message and color based on loan status
+  const getStatusMessage = (status: string) => {
+    const messages: Record<string, { text: string, color: string, className: string }> = {
+      pending: {
+        text: "আপনার আবেদনটি যাচাই-বাছাই চলছে...",
+        color: "text-amber-800",
+        className: "text-amber-800"
+      },
+      pass: {
+        text: "অভিনন্দন, আপনার লোনটি পাস হয়ে এসেছে ।",
+        color: "text-green-800",
+        className: "text-green-800"
+      },
+      pay_pending: {
+        text: "বিশেষ কারণে আপনার লোনটি স্থগিত করা হলো।",
+        color: "text-amber-800",
+        className: "text-amber-800"
+      },
+      pay_pass: {
+        text: "অভিনন্দন, আপনার ঋণটি পাস হয়েছে।",
+        color: "text-green-800",
+        className: "text-green-800"
+      },
+      rejected: {
+        text: "বিশেষ কারণে আপনার লোনটি বাতিল করা হলো।",
+        color: "text-red-800",
+        className: "text-red-800"
+      }
+    }
+    
+    return messages[status] || messages.pending
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -153,66 +186,7 @@ export function DashboardHome() {
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">আপনার আর্থিক সহযোগী, বন্ধু এবং পরিবার - আমরা আপনার স্বপ্ন পূরণে সহায়তা করি</p>
         </div>
 
-        {/* Status Card - Modern Design */}
-        <Card className="p-10 bg-gradient-to-br from-white to-amber-50 border border-amber-100 shadow-2xl rounded-3xl transition-all duration-300 hover:shadow-3xl mb-12">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-amber-100 mb-4">
-              <Target className="h-7 w-7 text-amber-700" />
-            </div>
-            <h2 className="text-4xl font-bold text-gray-800">আবেদনের অবস্থা</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto mt-4"></div>
-          </div>
-          <div className="max-w-3xl mx-auto">
-            <div className="p-8 bg-gradient-to-r from-white to-amber-50 rounded-2xl border border-amber-200 shadow-md mb-8 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 mb-6 mx-auto">
-                <Users className="h-8 w-8 text-amber-700" />
-              </div>
-              {loanData?.status === 'pass' ? (
-                <TypingAnimation 
-                  text="আপনার লোনের আবেদনটি পাস হয়ে এসেছে।"
-                  speed={50}
-                  delay={15000}
-                  restartDelay={2000}
-                  className="text-green-800 text-2xl font-medium"
-                />
-              ) : (
-                <TypingAnimation 
-                  text="আপনে আবেদনটি যাচাই-বাছাই চলতেছে..."
-                  speed={50}
-                  delay={15000}
-                  restartDelay={2000}
-                  className="text-amber-800 text-2xl font-medium"
-                />
-              )}
-              <p className="text-amber-600 mt-4">
-                {loanData?.status === 'pass' 
-                  ? "আপনার অর্থটি উত্তোলন করার জন্য উত্তোলন করুন বটনটিতে ক্লিক করুন।" 
-                  : "আমাদের টিম শীঘ্রই আপনার আবেদনটি পর্যালোচনা করবে"}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-2xl border border-amber-100 text-center shadow-md transition-all duration-300 hover:shadow-lg">
-                <p className="text-amber-700 font-medium text-lg mb-2">অবস্থা</p>
-                <p className="text-3xl font-bold text-amber-900 mt-2 bg-gradient-to-r from-amber-700 to-orange-800 bg-clip-text text-transparent">{getStatusLabel(loanData?.status || "pending")}</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl border border-amber-100 text-center shadow-md transition-all duration-300 hover:shadow-lg flex items-center justify-center">
-                <Button 
-                  className={`py-3 px-6 text-lg font-bold rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass' ? 'bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white' : 'bg-gradient-to-r from-red-600 to-red-800 text-white cursor-not-allowed opacity-80'}`}
-                  onClick={() => {
-                    if (loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass') {
-                      window.location.href = '/withdrawal'
-                    }
-                  }}
-                  disabled={!(loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass')}
-                >
-                  উত্তোলন করুন
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Enhanced Professional Carousel */}
+        {/* Enhanced Professional Carousel - Moved to top */}
         <div className="mb-12 rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/10 transition-all duration-300 hover:shadow-3xl">
           <Carousel 
             className="w-full"
@@ -257,6 +231,59 @@ export function DashboardHome() {
             <CarouselNext className="absolute right-8 bg-white/30 hover:bg-white/50 text-white border-none size-16 backdrop-blur-md transition-all duration-300 shadow-lg" />
           </Carousel>
         </div>
+
+        {/* Status Card - Modern Design */}
+        <Card className="p-10 bg-gradient-to-br from-white to-amber-50 border border-amber-100 shadow-2xl rounded-3xl transition-all duration-300 hover:shadow-3xl mb-12">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-amber-100 mb-4">
+              <Target className="h-7 w-7 text-amber-700" />
+            </div>
+            <h2 className="text-4xl font-bold text-gray-800">আবেদনের অবস্থা</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto mt-4"></div>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            <div className="p-8 bg-gradient-to-r from-white to-amber-50 rounded-2xl border border-amber-200 shadow-md mb-8 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 mb-6 mx-auto">
+                <Users className="h-8 w-8 text-amber-700" />
+              </div>
+              <div
+                key={loanData?.status || "pending"}
+              >
+                <TypingAnimation 
+                  text={getStatusMessage(loanData?.status || "pending").text}
+                  speed={50}
+                  delay={15000}
+                  restartDelay={2000}
+                  className={`text-2xl font-medium ${getStatusMessage(loanData?.status || "pending").className}`}
+                />
+              </div>
+              <p className="text-amber-600 mt-4">
+                {loanData?.status === 'pass' || loanData?.status === 'pay_pass'
+                  ? "আপনার অর্থটি উত্তোলন করার জন্য উত্তোলন করুন বটনটিতে ক্লিক করুন।" 
+                  : "আমাদের টিম শীঘ্রই আপনার আবেদনটি পর্যালোচনা করবে"}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-2xl border border-amber-100 text-center shadow-md transition-all duration-300 hover:shadow-lg">
+                <p className="text-amber-700 font-medium text-lg mb-2">অবস্থা</p>
+                <p className="text-3xl font-bold text-amber-900 mt-2 bg-gradient-to-r from-amber-700 to-orange-800 bg-clip-text text-transparent">{getStatusLabel(loanData?.status || "pending")}</p>
+              </div>
+              <div className="bg-white p-6 rounded-2xl border border-amber-100 text-center shadow-md transition-all duration-300 hover:shadow-lg flex items-center justify-center">
+                <Button 
+                  className={`py-3 px-6 text-lg font-bold rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass' ? 'bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white' : 'bg-gradient-to-r from-red-600 to-red-800 text-white cursor-not-allowed opacity-80'}`}
+                  onClick={() => {
+                    if (loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass') {
+                      window.location.href = '/withdrawal'
+                    }
+                  }}
+                  disabled={!(loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass')}
+                >
+                  উত্তোলন করুন
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {/* Main Loan Summary Card - Modern Design */}
         <Card className="p-10 bg-gradient-to-br from-white to-blue-50 border border-blue-100 shadow-2xl rounded-3xl transition-all duration-300 hover:shadow-3xl">
@@ -306,64 +333,7 @@ export function DashboardHome() {
         <p className="text-gray-600 text-base">আপনার আর্থিক সহযোগী, বন্ধু এবং পরিবার</p>
       </div>
 
-      {/* Status Card - Modern Design */}
-      <Card className="p-8 bg-gradient-to-br from-white to-amber-50 border border-amber-100 rounded-2xl shadow-lg mb-8">
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 mb-4 mx-auto">
-            <Target className="h-6 w-6 text-amber-700" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800">আবেদনের অবস্থা</h2>
-          <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto mt-3"></div>
-        </div>
-        <div className="p-5 bg-gradient-to-r from-white to-amber-50 rounded-xl border border-amber-200 mb-6 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 mb-4 mx-auto">
-            <Users className="h-6 w-6 text-amber-700" />
-          </div>
-          {loanData?.status === 'pass' ? (
-            <TypingAnimation 
-              text="আপনার লোনের আবেদনটি পাস হয়ে এসেছে।"
-              speed={50}
-              delay={15000}
-              restartDelay={2000}
-              className="text-green-800 text-lg font-medium"
-            />
-          ) : (
-            <TypingAnimation 
-              text="আপনে আবেদনটি যাচাই-বাছাই চলতেছে..."
-              speed={50}
-              delay={15000}
-              restartDelay={2000}
-              className="text-amber-800 text-lg font-medium"
-            />
-          )}
-          <p className="text-amber-600 text-sm mt-2">
-            {loanData?.status === 'pass' 
-              ? "আপনার অর্থটি উত্তোলন করার জন্য উত্তোলন করুন বটনটিতে ক্লিক করুন।" 
-              : "আমাদের টিম শীঘ্রই আপনার আবেদনটি পর্যালোচনা করবে"}
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-4">
-          <div className="bg-white p-4 rounded-xl border border-amber-100 text-center shadow-sm transition-all duration-300 hover:shadow-md">
-            <p className="text-amber-700 font-medium">অবস্থা</p>
-            <p className="text-2xl font-bold text-amber-900 mt-1 bg-gradient-to-r from-amber-700 to-orange-800 bg-clip-text text-transparent">{getStatusLabel(loanData?.status || "pending")}</p>
-          </div>
-          <div className="bg-white p-4 rounded-xl border border-amber-100 text-center shadow-sm transition-all duration-300 hover:shadow-md flex items-center justify-center">
-            <Button 
-              className={`py-2 px-4 text-base font-bold rounded-xl shadow-lg transition-all duration-300 hover:shadow-md ${loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass' ? 'bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white' : 'bg-gradient-to-r from-red-600 to-red-800 text-white cursor-not-allowed opacity-80'}`}
-              onClick={() => {
-                if (loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass') {
-                  window.location.href = '/withdrawal'
-                }
-              }}
-              disabled={!(loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass')}
-            >
-              উত্তোলন করুন
-            </Button>
-          </div>
-        </div>
-      </Card>
-
-      {/* Enhanced Professional Slider for Mobile */}
+      {/* Enhanced Professional Slider for Mobile - Moved to top */}
       <div className="mb-8 rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/10">
         <Carousel 
           className="w-full"
@@ -407,6 +377,57 @@ export function DashboardHome() {
         </Carousel>
       </div>
 
+      {/* Status Card - Modern Design */}
+      <Card className="p-8 bg-gradient-to-br from-white to-amber-50 border border-amber-100 rounded-2xl shadow-lg mb-8">
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 mb-4 mx-auto">
+            <Target className="h-6 w-6 text-amber-700" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800">আবেদনের অবস্থা</h2>
+          <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto mt-3"></div>
+        </div>
+        <div className="p-5 bg-gradient-to-r from-white to-amber-50 rounded-xl border border-amber-200 mb-6 text-center">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 mb-4 mx-auto">
+            <Users className="h-6 w-6 text-amber-700" />
+          </div>
+          <div
+            key={loanData?.status || "pending"}
+          >
+            <TypingAnimation 
+              text={getStatusMessage(loanData?.status || "pending").text}
+              speed={50}
+              delay={15000}
+              restartDelay={2000}
+              className={`text-lg font-medium ${getStatusMessage(loanData?.status || "pending").className}`}
+            />
+          </div>
+          <p className="text-amber-600 text-sm mt-2">
+            {loanData?.status === 'pass' || loanData?.status === 'pay_pass'
+              ? "আপনার অর্থটি উত্তোলন করার জন্য উত্তোলন করুন বটনটিতে ক্লিক করুন।" 
+              : "আমাদের টিম শীঘ্রই আপনার আবেদনটি পর্যালোচনা করবে"}
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4">
+          <div className="bg-white p-4 rounded-xl border border-amber-100 text-center shadow-sm transition-all duration-300 hover:shadow-md">
+            <p className="text-amber-700 font-medium">অবস্থা</p>
+            <p className="text-2xl font-bold text-amber-900 mt-1 bg-gradient-to-r from-amber-700 to-orange-800 bg-clip-text text-transparent">{getStatusLabel(loanData?.status || "pending")}</p>
+          </div>
+          <div className="bg-white p-4 rounded-xl border border-amber-100 text-center shadow-sm transition-all duration-300 hover:shadow-md flex items-center justify-center">
+            <Button 
+              className={`py-2 px-4 text-base font-bold rounded-xl shadow-lg transition-all duration-300 hover:shadow-md ${loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass' ? 'bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white' : 'bg-gradient-to-r from-red-600 to-red-800 text-white cursor-not-allowed opacity-80'}`}
+              onClick={() => {
+                if (loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass') {
+                  window.location.href = '/withdrawal'
+                }
+              }}
+              disabled={!(loanData?.status === 'pass' || loanData?.status === 'pay_pending' || loanData?.status === 'pay_pass')}
+            >
+              উত্তোলন করুন
+            </Button>
+          </div>
+        </div>
+      </Card>
+
       {/* Main Loan Summary Card - Modern Design */}
       <Card className="p-8 bg-gradient-to-br from-white to-blue-50 border border-blue-100 rounded-2xl shadow-lg">
         <div className="text-center mb-8">
@@ -449,3 +470,5 @@ export function DashboardHome() {
     </Card>
   )
 }
+
+export default DashboardHome

@@ -96,9 +96,11 @@ export default function CustomersPage() {
     } else {
       const filtered = customers.filter(
         (customer) =>
-          customer.name.toLowerCase().includes(value.toLowerCase()) ||
-          customer.phone.includes(value) ||
-          customer.personalInfo?.nidNumber?.includes(value),
+          (customer.name && customer.name.toLowerCase().includes(value.toLowerCase())) ||
+          (customer.phone && customer.phone.includes(value)) ||
+          (customer.personalInfo?.nidNumber && customer.personalInfo.nidNumber.includes(value)) ||
+          (customer.personalInfo?.fullName && customer.personalInfo.fullName.toLowerCase().includes(value.toLowerCase())) ||
+          (customer.personalInfo?.mobileNumber && customer.personalInfo.mobileNumber.includes(value))
       )
       setFilteredCustomers(filtered)
       setTotalCustomers(filtered.length)
@@ -147,9 +149,11 @@ export default function CustomersPage() {
       } else {
         const filtered = updatedCustomers.filter(
           (customer) =>
-            customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            customer.phone.includes(searchTerm) ||
-            customer.personalInfo?.nidNumber?.includes(searchTerm),
+            (customer.name && customer.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (customer.phone && customer.phone.includes(searchTerm)) ||
+            (customer.personalInfo?.nidNumber && customer.personalInfo.nidNumber.includes(searchTerm)) ||
+            (customer.personalInfo?.fullName && customer.personalInfo.fullName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (customer.personalInfo?.mobileNumber && customer.personalInfo.mobileNumber.includes(searchTerm))
         )
         setFilteredCustomers(filtered)
         setTotalCustomers(filtered.length)
@@ -724,8 +728,8 @@ export default function CustomersPage() {
         </Dialog>
       </main>
       
-      {/* Custom Animation Styles */}
-      <style jsx global>{`
+      <style>
+        {`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
@@ -741,7 +745,8 @@ export default function CustomersPage() {
         .animate-shake {
           animation: shake 0.5s ease-in-out;
         }
-      `}</style>
+        `}
+      </style>
     </div>
   )
 }

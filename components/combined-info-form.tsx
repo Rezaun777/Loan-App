@@ -283,10 +283,10 @@ export function CombinedInfoForm() {
           <p className="text-gray-500 text-sm mt-2">আপনার সম্পূর্ণ তথ্য দিন</p>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Personal Info Section */}
           <div className="space-y-6">
-            <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <div className="bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100">
               <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2 pb-3 border-b border-gray-200">
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <User className="w-5 h-5 text-blue-600" />
@@ -294,7 +294,7 @@ export function CombinedInfoForm() {
                 ব্যক্তিগত তথ্য
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-5">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">আপনার নাম দিন</label>
                   <div className="relative">
@@ -306,7 +306,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading || !!formData.fullName}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -329,7 +329,7 @@ export function CombinedInfoForm() {
                         type="text"
                         inputMode="numeric"
                         pattern="[0-9]*"
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -349,7 +349,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -369,7 +369,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -391,7 +391,7 @@ export function CombinedInfoForm() {
                         disabled={isLoading || !!formData.mobileNumber}
                         type="tel"
                         inputMode="tel"
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -413,7 +413,7 @@ export function CombinedInfoForm() {
                           onChange={handleChange}
                           required
                           disabled={isLoading}
-                          className="py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
+                          className="py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
                           maxLength={2}
                           min="1"
                           max="31"
@@ -430,7 +430,7 @@ export function CombinedInfoForm() {
                           onChange={handleChange}
                           required
                           disabled={isLoading}
-                          className="py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
+                          className="py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
                           maxLength={2}
                           min="1"
                           max="12"
@@ -447,7 +447,7 @@ export function CombinedInfoForm() {
                           onChange={handleChange}
                           required
                           disabled={isLoading}
-                          className="py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
+                          className="py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100 text-center"
                           maxLength={4}
                           minLength={4}
                           min="1920"
@@ -469,7 +469,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -489,7 +489,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -501,7 +501,7 @@ export function CombinedInfoForm() {
             </div>
 
             {/* Nominee Info Section */}
-            <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <div className="bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100">
               <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2 pb-3 border-b border-gray-200">
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <Users className="w-5 h-5 text-blue-600" />
@@ -509,7 +509,7 @@ export function CombinedInfoForm() {
                 নমিনি তথ্য
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-5">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">সম্পর্ক</label>
                   <div className="relative">
@@ -520,7 +520,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="w-full pl-10 pr-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none appearance-none transition-all duration-300 group-hover:bg-blue-50 cursor-pointer text-gray-700"
+                        className="w-full pl-10 pr-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none appearance-none transition-all duration-300 group-hover:bg-blue-50 cursor-pointer text-gray-700"
                       >
                         <option value="" className="text-gray-500">সম্পর্ক নির্বাচন করুন</option>
                         <option value="parent">পিতা/মাতা</option>
@@ -550,7 +550,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -573,7 +573,7 @@ export function CombinedInfoForm() {
                         type="tel"
                         inputMode="numeric"
                         pattern="[0-9]*"
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -585,7 +585,7 @@ export function CombinedInfoForm() {
             </div>
 
             {/* Bank Info Section */}
-            <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <div className="bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100">
               <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2 pb-3 border-b border-gray-200">
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <Building className="w-5 h-5 text-blue-600" />
@@ -593,7 +593,7 @@ export function CombinedInfoForm() {
                 ব্যাংক অ্যাকাউন্ট
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-5">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">অ্যাকাউন্ট টাইপ</label>
                   <div className="relative">
@@ -604,7 +604,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="w-full pl-10 pr-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none appearance-none transition-all duration-300 group-hover:bg-blue-50 cursor-pointer text-gray-700"
+                        className="w-full pl-10 pr-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none appearance-none transition-all duration-300 group-hover:bg-blue-50 cursor-pointer text-gray-700"
                       >
                         <option value="" className="text-gray-500">অ্যাকাউন্ট টাইপ নির্বাচন করুন</option>
                         <option value="bank">Bank Account</option>
@@ -633,7 +633,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -653,7 +653,7 @@ export function CombinedInfoForm() {
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -676,7 +676,7 @@ export function CombinedInfoForm() {
                         type="text"
                         inputMode="numeric"
                         pattern="[0-9]*"
-                        className="pl-10 py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
+                        className="pl-10 py-5 sm:py-6 rounded-xl border-0 bg-white focus:ring-0 focus:ring-offset-0 focus:outline-none hover:bg-gray-100"
                       />
                     </div>
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -688,7 +688,7 @@ export function CombinedInfoForm() {
             </div>
 
             {/* Document Upload Section */}
-            <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <div className="bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100">
               <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2 pb-3 border-b border-gray-200">
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <FileText className="w-5 h-5 text-blue-600" />
@@ -697,12 +697,12 @@ export function CombinedInfoForm() {
               </h2>
               <p className="text-sm text-gray-500 mt-2">আপনার ডকুমেন্টগুলি আপলোড করুন</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-5">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">প্রোফাইল ছবি</label>
                   <div className="relative">
                     <div className="relative rounded-xl p-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:bg-gray-200 transition-all duration-300">
-                      <div className="bg-white rounded-xl p-4">
+                      <div className="bg-white rounded-xl p-3 sm:p-4">
                         <ImageUpload 
                           label="" 
                           onUpload={(url) => handleImageUpload("profilePhoto", url)} 
@@ -720,7 +720,7 @@ export function CombinedInfoForm() {
                   <label className="text-sm font-medium text-gray-700">আইডি কার্ড (সামনে)</label>
                   <div className="relative">
                     <div className="relative rounded-xl p-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:bg-gray-200 transition-all duration-300">
-                      <div className="bg-white rounded-xl p-4">
+                      <div className="bg-white rounded-xl p-3 sm:p-4">
                         <ImageUpload 
                           label="" 
                           onUpload={(url) => handleImageUpload("nidCardFront", url)} 
@@ -738,7 +738,7 @@ export function CombinedInfoForm() {
                   <label className="text-sm font-medium text-gray-700">আইডি কার্ড (পিছনে)</label>
                   <div className="relative">
                     <div className="relative rounded-xl p-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:bg-gray-200 transition-all duration-300">
-                      <div className="bg-white rounded-xl p-4">
+                      <div className="bg-white rounded-xl p-3 sm:p-4">
                         <ImageUpload 
                           label="" 
                           onUpload={(url) => handleImageUpload("nidCardBack", url)} 
@@ -756,7 +756,7 @@ export function CombinedInfoForm() {
                   <label className="text-sm font-medium text-gray-700">আইডি কার্ড হাতে নিয়ে সেলফি</label>
                   <div className="relative">
                     <div className="relative rounded-xl p-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:bg-gray-200 transition-all duration-300">
-                      <div className="bg-white rounded-xl p-4">
+                      <div className="bg-white rounded-xl p-3 sm:p-4">
                         <ImageUpload 
                           label="" 
                           onUpload={(url) => handleImageUpload("selfieWithId", url)} 
@@ -774,7 +774,7 @@ export function CombinedInfoForm() {
                   <label className="text-sm font-medium text-gray-700">স্বাক্ষর</label>
                   <div className="relative">
                     <div className="relative rounded-xl p-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:bg-gray-200 transition-all duration-300">
-                      <div className="bg-white rounded-xl p-4">
+                      <div className="bg-white rounded-xl p-3 sm:p-4">
                         <SignaturePad 
                           onUpload={(url) => handleImageUpload("signature", url)} 
                           isLoading={isLoading} 

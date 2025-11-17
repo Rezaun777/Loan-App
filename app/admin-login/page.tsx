@@ -144,8 +144,8 @@ export default function AdminLoginPage() {
         </form>
       </Card>
       
-      {/* Custom Animation Styles */}
-      <style jsx global>{`
+      <style>
+        {`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(30px) scale(0.95); }
           to { opacity: 1; transform: translateY(0) scale(1); }
@@ -192,7 +192,8 @@ export default function AdminLoginPage() {
           background-size: 200% 200%;
           animation: gradient-shift 3s ease infinite;
         }
-      `}</style>
+        `}
+      </style>
     </main>
   )
 }

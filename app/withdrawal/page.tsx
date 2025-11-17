@@ -185,10 +185,10 @@ export default function WithdrawalPage() {
       </div>
       
       {/* Withdrawal content section with improved styling and bottom padding for nav */}
-      <div className="flex-1 flex flex-col px-4 pb-20 bg-gradient-to-b from-blue-50/90 to-indigo-100/90 backdrop-blur-sm">
+      <div className="flex-1 flex flex-col px-4 pb-20 bg-gradient-to-b from-blue-50/90 to-indigo-100/90 backdrop-blur-sm w-full">
         {/* Curved top to match header */}
-        <div className="h-8 bg-gradient-to-b from-white/30 to-transparent rounded-t-[50%] -mt-4"></div>
-        <div className="space-y-8 flex-1">
+        <div className="h-8 bg-gradient-to-b from-white/30 to-transparent rounded-t-[50%] -mt-4 w-full"></div>
+        <div className="space-y-8 flex-1 w-full">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-800 to-indigo-900 bg-clip-text text-transparent mb-2">
               বিশ্ব ব্যাংকের আর্থিক সেবায় আপনাকে স্বাগতম

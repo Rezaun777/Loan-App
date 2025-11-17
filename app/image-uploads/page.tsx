@@ -64,10 +64,10 @@ export default function ImageUploadsPage() {
       </div>
       
       {/* Image upload form section with improved styling and bottom padding for nav */}
-      <div className="flex-1 flex items-center justify-center px-4 pb-20 bg-gradient-to-b from-blue-50/90 to-indigo-100/90 backdrop-blur-sm">
+      <div className="flex-1 flex items-center justify-center px-4 pb-20 bg-gradient-to-b from-blue-50/90 to-indigo-100/90 backdrop-blur-sm w-full">
         {/* Curved top to match header */}
         <div className="h-8 bg-gradient-to-b from-white/30 to-transparent rounded-t-[50%] -mt-4 w-full"></div>
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-full">
           <div className="p-6 w-full shadow-xl border-0 bg-white/90 backdrop-blur-sm rounded-2xl">
             <ImageUploadForm />
           </div>

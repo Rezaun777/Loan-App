@@ -184,7 +184,7 @@ export default function FinalWithdrawalPage() {
     // Desktop view
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
-        <style jsx>{`
+        <style>{`
           @keyframes progress {
             0% { width: 0%; }
             100% { width: 100%; }
@@ -363,7 +363,7 @@ export default function FinalWithdrawalPage() {
   // Mobile view with moon-shaped header and static navbar
   return (
     <main className={`phone-frame min-h-screen flex flex-col bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900`}>
-      <style jsx>{`
+      <style>{`
         @keyframes progress {
           0% { width: 0%; }
           100% { width: 100%; }

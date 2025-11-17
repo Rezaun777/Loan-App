@@ -500,8 +500,8 @@ export default function AdminDashboard() {
         </div>
       </main>
       
-      {/* Custom Animation Styles */}
-      <style jsx global>{`
+      <style>
+        {`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
@@ -516,7 +516,8 @@ export default function AdminDashboard() {
         .animate-countUp {
           animation: countUp 0.5s ease-out forwards;
         }
-      `}</style>
+        `}
+      </style>
     </div>
   )
 }

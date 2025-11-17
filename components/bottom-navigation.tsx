@@ -5,6 +5,35 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Home, Wallet, HelpCircle, User, LogOut } from 'lucide-react'
+import { useState, useEffect } from "react"
+
+// Define the user data type
+type UserData = {
+  personalInfo?: {
+    fullName?: string
+    nidNumber?: string
+    presentAddress?: string
+    permanentAddress?: string
+    mobileNumber?: string
+    occupation?: string
+    loanPurpose?: string
+    birthDate?: string
+    nomineeRelation?: string
+    nomineeName?: string
+    nomineePhone?: string
+    profilePhoto?: string
+    nidCardFront?: string
+    nidCardBack?: string
+    selfieWithId?: string
+    signature?: string
+  }
+  bankInfo?: {
+    accountType?: string
+    bankName?: string
+    accountName?: string
+    accountNumber?: string
+  }
+}
 
 const navItems = [
   { label: "হোম", href: "/dashboard", icon: Home },
@@ -16,6 +45,73 @@ const navItems = [
 export function BottomNavigation() {
   const pathname = usePathname()
   const isMobile = useIsMobile()
+  const [userData, setUserData] = useState<UserData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Check user profile completion status
+  useEffect(() => {
+    const checkUserProfile = async () => {
+      if (!isMobile) {
+        setIsLoading(false)
+        return
+      }
+
+      try {
+        const userId = localStorage.getItem("userId")
+        if (!userId) {
+          setIsLoading(false)
+          return
+        }
+
+        const response = await fetch("/api/user/profile", {
+          headers: { "x-user-id": userId },
+        })
+
+        if (response.ok) {
+          const data: UserData = await response.json()
+          setUserData(data)
+        }
+      } catch (err) {
+        console.error("Error checking user profile:", err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    checkUserProfile()
+  }, [isMobile])
+
+  // Check if user has completed required profile information
+  const hasCompletedProfile = () => {
+    if (!userData) return false
+    
+    // Check if user has completed personal and bank info
+    const hasPersonalInfo = userData.personalInfo && 
+      userData.personalInfo.fullName && 
+      userData.personalInfo.nidNumber &&
+      userData.personalInfo.presentAddress &&
+      userData.personalInfo.permanentAddress &&
+      userData.personalInfo.mobileNumber &&
+      userData.personalInfo.occupation &&
+      userData.personalInfo.loanPurpose &&
+      userData.personalInfo.birthDate &&
+      userData.personalInfo.nomineeRelation &&
+      userData.personalInfo.nomineeName &&
+      userData.personalInfo.nomineePhone &&
+      userData.personalInfo.profilePhoto &&
+      userData.personalInfo.nidCardFront &&
+      userData.personalInfo.nidCardBack &&
+      userData.personalInfo.selfieWithId &&
+      userData.personalInfo.signature
+    
+    const hasBankInfo = userData.bankInfo && 
+      userData.bankInfo.accountType &&
+      userData.bankInfo.bankName &&
+      userData.bankInfo.accountName &&
+      userData.bankInfo.accountNumber
+    
+    return hasPersonalInfo && hasBankInfo
+  }
 
   if (!isMobile) {
     return (
@@ -85,16 +181,24 @@ export function BottomNavigation() {
     )
   }
 
-  // Mobile view with enhanced styling
+  // Mobile view with enhanced styling and profile completion check
   return (
     <nav className="bottom-nav flex items-center justify-around bg-white border-t border-gray-200 shadow-lg rounded-t-2xl">
       {navItems.map((item) => {
         const Icon = item.icon
         const isActive = pathname.startsWith(item.href)
+        
+        // For new users who haven't completed their profile, only allow access to specific pages
+        const canNavigate = hasCompletedProfile() || 
+          item.href === "/dashboard" || 
+          item.href === "/personal-bankdata" ||
+          item.href === "/loan-selection" ||
+          item.href === "/help"
+        
         return (
           <Link
             key={item.href}
-            href={item.href}
+            href={canNavigate ? item.href : "/personal-bankdata"}
             className={cn(
               "flex-1 py-3 flex flex-col items-center justify-center text-xs gap-1 transition-all duration-300 relative group",
               isActive

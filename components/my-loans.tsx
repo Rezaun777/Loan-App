@@ -142,7 +142,7 @@ export function MyLoans() {
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-blue-50">
                     <span className="text-blue-600">মোট প্রদেয়:</span>
-                    <span className="font-bold text-blue-900">অনুমোদিত হয়নি</span>
+                    <span className="font-bold text-blue-900">৳{loanDetails ? convertToBanglaDigits(loanDetails.totalAmount.toFixed(0)) : "0"}</span>
                   </div>
                 </div>
               </Card>

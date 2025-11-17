@@ -394,8 +394,8 @@ export default function CreateAdminPage() {
           </Card>
         </div>
         
-        {/* Custom Animation Styles */}
-        <style jsx global>{`
+        <style>
+          {`
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -417,7 +417,8 @@ export default function CreateAdminPage() {
           .animate-slideInRight {
             animation: slideInRight 0.5s ease-out forwards;
           }
-        `}</style>
+          `}
+        </style>
       </main>
 
       {/* Edit Admin Dialog */}
