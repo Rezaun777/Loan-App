@@ -4,8 +4,8 @@ import type React from "react"
 
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { X } from "lucide-react"
+import { X, Upload, FileText } from "lucide-react"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface ImageUploadProps {
   label: string
@@ -17,16 +17,23 @@ export function ImageUpload({ label, onUpload, isLoading }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState("")
+  const [fileName, setFileName] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const isMobile = useIsMobile()
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Show preview
-    const reader = new FileReader()
-    reader.onload = (e) => setPreview(e.target?.result as string)
-    reader.readAsDataURL(file)
+    // Set file name for mobile view
+    setFileName(file.name)
+
+    // Show preview (only for desktop)
+    if (!isMobile) {
+      const reader = new FileReader()
+      reader.onload = (e) => setPreview(e.target?.result as string)
+      reader.readAsDataURL(file)
+    }
 
     // Upload to Cloudinary
     setError("")
@@ -57,6 +64,7 @@ export function ImageUpload({ label, onUpload, isLoading }: ImageUploadProps) {
 
   const removeImage = () => {
     setPreview(null)
+    setFileName("")
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
@@ -64,6 +72,60 @@ export function ImageUpload({ label, onUpload, isLoading }: ImageUploadProps) {
     setError("")
   }
 
+  // Mobile-optimized version with traditional file input
+  if (isMobile) {
+    return (
+      <div className="space-y-3">
+        <label className="text-sm font-medium block">{label}</label>
+
+        <div className="border-2 border-dashed border-border rounded-lg p-4">
+          {fileName ? (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between bg-gray-100 p-2 rounded">
+                <div className="flex items-center space-x-2 flex-1 min-w-0">
+                  <FileText className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                  <p className="text-xs text-gray-600 truncate">{fileName}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="ml-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                  disabled={uploading || isLoading}
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+              <div className="relative">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full py-2 px-3 border border-gray-300 rounded-md text-sm file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  disabled={uploading || isLoading}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="relative">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="w-full py-2 px-3 border border-gray-300 rounded-md text-sm file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                disabled={uploading || isLoading}
+              />
+            </div>
+          )}
+        </div>
+
+        {error && <p className="text-sm text-destructive mt-2">{error}</p>}
+      </div>
+    )
+  }
+
+  // Desktop version (unchanged)
   return (
     <div className="space-y-3">
       <label className="text-sm font-medium block">{label}</label>
@@ -72,7 +134,7 @@ export function ImageUpload({ label, onUpload, isLoading }: ImageUploadProps) {
         {preview ? (
           <div className="space-y-4">
             <div className="relative w-full h-40 md:h-48">
-              <Image src={preview || "/placeholder.svg"} alt="Preview" fill className="object-contain" />
+              <img src={preview || "/placeholder.svg"} alt="Preview" className="object-contain w-full h-full" />
               <button
                 type="button"
                 onClick={removeImage}
