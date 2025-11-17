@@ -201,7 +201,7 @@ export function LoanSelectionForm() {
               </svg>
               প্রক্রিয়া করছেন...
             </span>
-          ) : "উত্তোলন"}
+          ) : "জমা দিন"}
         </Button>
       </div>
     </Card>
